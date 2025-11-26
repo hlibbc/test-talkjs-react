@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Talk from "talkjs";
 
-const TALKJS_APP_ID = "tdjyw1Rh"; // 본인 App ID로 교체 가능
+const TALKJS_APP_ID = (import.meta.env.VITE_TALKJS_APP_ID as string) || ""; // .env의 VITE_TALKJS_APP_ID 사용
 
 type SimpleUser = {
     id: string;
@@ -61,6 +61,11 @@ const App: React.FC = () => {
 
         Talk.ready.then(() => {
             if (isCancelled) {
+                return;
+            }
+
+            if (!TALKJS_APP_ID) {
+                console.error("환경 변수 VITE_TALKJS_APP_ID가 설정되지 않았습니다. .env에 VITE_TALKJS_APP_ID=<YOUR_TALKJS_APP_ID>를 추가하세요.");
                 return;
             }
 
